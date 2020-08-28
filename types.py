@@ -26,7 +26,7 @@ class AuthenticationRequired(graphene.ObjectType):
 class MutationPayload(graphene.ObjectType):
     ok = graphene.Boolean(required=True)
     errors = graphene.List(ErrorInterface, required=True)
-    query = graphene.Field('src.schemas.schema.Query', required=True)
+    query = graphene.Field('src.schemas.Query', required=True)
 
     def resolve_ok(self, info):
         return len(self.errors or []) == 0
