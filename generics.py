@@ -1,20 +1,18 @@
 import graphene
 
 from .generics_utils import (
-    AUTHENTICATION_REQUIRED_CHECK,
-
     decorate_mutate_func,
     define_mutation_errors,
     create_default_create_function,
     default_update_function,
     default_delete_function,
 )
-from .types import MutationPayload, MutationRoot
+from .types import MutationPayload
 
 
 class DefaultMutationOptions(graphene.types.mutation.MutationOptions):
     checks: list = None  # iterable of tuples (error_class, checker (will receive mutate args))
-    authentication_required: bool = None
+    auth_required: bool = None
     # root: MutationRoot = None
     # root_name: str = None
     root_required: bool = None
@@ -25,15 +23,14 @@ class DefaultMutation(MutationPayload, graphene.Mutation):
     @classmethod
     def __init_subclass_with_meta__(
             cls, resolver=None, output=None, arguments=None, _meta=None,
-            checks=None, authentication_required=True, record_type=None, root_required=False,
+            checks=None, auth_required=True, record_type=None, root_required=False,
             **options
     ):
         checks = checks or []
         if not _meta:
             _meta = DefaultMutationOptions(cls)
 
-        if authentication_required:
-            checks = [AUTHENTICATION_REQUIRED_CHECK, *checks]
+        _meta.auth_required = auth_required
         _meta.checks = checks
         _meta.root_required = root_required
 

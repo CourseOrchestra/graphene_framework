@@ -1,12 +1,6 @@
 import graphene
 
-from .types import ErrorInterface, AuthenticationRequired, MutationException
-from .utils import decapitalize
-
-AUTHENTICATION_REQUIRED_CHECK = (
-    AuthenticationRequired,
-    lambda root, info, *args, **kwargs: info.context.user.is_anonymous,
-)
+from .types import ErrorInterface, MutationException
 
 
 def create_default_create_function(model, include_user, user_field_name):
