@@ -26,15 +26,9 @@ def default_delete_function(instance, user=None):
 
 def perform_checks(_checks, *mutation_args, **mutation_kwargs):
     errors = set()
-    try:
-        for error_class, checker in _checks:
-            try:
-                if checker(*mutation_args, **mutation_kwargs):
-                    errors.add(error_class())
-            except Exception as e:
-                print(e)
-    except (TypeError, ValueError,):
-        assert False, 'Checks must be an iterable of tuples (error_class, checker)'
+    for error_class, checker in _checks:
+        if checker(*mutation_args, **mutation_kwargs):
+            errors.add(error_class())
 
     return errors
 
