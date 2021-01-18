@@ -123,4 +123,7 @@ class DeleteMutation(DefaultMutation):
     def mutate(cls, instance, info, errors=None):
         errors = errors or set()
         default_delete_function(instance, user=info.context.user)
+        post_mutate = getattr(cls, 'post_mutate', None)
+        if callable(post_mutate):
+            post_mutate(instance, user=info.context.user)
         return cls()
