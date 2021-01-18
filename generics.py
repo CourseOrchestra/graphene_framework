@@ -91,7 +91,7 @@ class CreateMutation(DefaultMutation):
 
         post_mutate = getattr(cls, 'post_mutate', None)
         if callable(post_mutate):
-            return post_mutate(instance, user=info.context.user)
+            post_mutate(instance, user=info.context.user)
 
         return cls(record=instance)
 
@@ -108,7 +108,7 @@ class UpdateMutation(DefaultMutation):
 
         post_mutate = getattr(cls, 'post_mutate', None)
         if callable(post_mutate):
-            return post_mutate(instance, user=info.context.user)
+            post_mutate(instance, user=info.context.user)
 
         return cls(record=instance)
 

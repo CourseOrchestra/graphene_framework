@@ -74,7 +74,12 @@ class MutationRoot(graphene.ObjectType):
 
     @classmethod
     def Field(cls):
-        return graphene.Field(cls, id=graphene.ID(required=False), resolver=cls.resolve)
+        from sqlalchemy.inspection import inspect
+        pk = inspect(cls._meta.model).primary_key
+        id_ = graphene.String(required=False)
+        if len(pk) > 1:
+            id_ = graphene.List(graphene.String, required=False)
+        return graphene.Field(cls, id=id_, resolver=cls.resolve)
 
 
 class MutationException(Exception):
